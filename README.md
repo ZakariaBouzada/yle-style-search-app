@@ -1,16 +1,48 @@
-# React + Vite
+# Yle-Style Daycare Search App 🇫🇮
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A responsive React web application designed to help citizens explore early childhood education data in Finland. Modeled after Yle's (Finnish Broadcasting Company) journalistic data graphics, the tool allows users to search for any municipality in mainland Finland to instantly view the percentage of foreign-language children in daycares and compare local figures against the national average.
 
-Currently, two official plugins are available:
+**Live Demo:** [https://yle-style-search-app.vercel.app/](https://yle-style-search-app.vercel.app/)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+---
 
-## React Compiler
+## Key Features & Technical Choices
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+* **Dynamic JSON-stat2 Parsing (No Hardcoding):** Instead of using flat data structures or rigid, hardcoded lists of 309 municipalities, the application dynamically processes the raw `Kunnat2.json` file in its native **JSON-stat2** format. It extracts municipality names, codes, and numerical indices on the fly directly from the file's metadata, making the architecture highly scalable and robust against future data structure updates from Statistics Finland.
+* **Yle-Inspired UX/UI:** Designed with a clean, mobile-first layout prioritizing scannability and accessibility. It features a custom auto-suggest search field and an intuitive visual horizontal bar chart.
+* **Smart Baseline Alignment:** Automatically isolates the national baseline (using the `"SSS"` code representing "Koko maa") to provide an immediate red indicator line for relative comparison.
+* **Internal Data Watchdog:** Includes a lightweight diagnostic layer (`useEffect` logger) running on load. It monitors data integrity, logging total parsed entries and flagging any corrupted values (`NaN`) or missing localization names straight to the browser console.
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## Data Source & Statistics
+
+* **Source:** Statistics Finland (*Tilastokeskus*), early childhood education statistics.
+* **Scope:** The app includes data for **293 municipalities**. 
+* *Note: As explicitly stated in the official source metadata, this dataset represents mainland Finland and excludes the 16 municipalities of Åland ("Ei sisällä Ahvenanmaan tietoja") due to different local data collection practices.*
+
+---
+
+## Future Improvements
+
+If this prototype were to be scaled further for production on Yle.fi, the next architectural milestones would be:
+1. **Side-by-Side Comparison:** Expanding the state array to allow users to select and overlay two different municipalities (e.g., *Helsinki vs. Vantaa*) simultaneously on the graph, alongside the national average line.
+2. **Time-Series Visualization:** Leveraging the historical year dimensions already present in the JSON-stat2 metadata to build a small line chart showing trends over recent years.
+
+---
+
+## How to Run Locally
+
+Follow these steps to get the development environment running locally on your machine:
+
+1. **Clone the repository:**
+```bash
+   git clone https://github.com/ZakariaBouzada/yle-style-search-app.git
+   cd yle-style-search-app
+# Install dependencies
+   npm install
+# Start local server
+   npm run dev
+# Build for production (Optional)
+   npm run build
+```
